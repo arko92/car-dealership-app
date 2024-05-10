@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom"
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginPanel />} />
+      <Route path="/login" element={<LoginPanel />} />
     </Routes>
   );
 }
