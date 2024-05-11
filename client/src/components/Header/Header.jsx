@@ -4,6 +4,25 @@ import "../../assets/style.css"
 
 const Header = () => {
     
+    const logout = async (e) => {
+      e.preventDefault();
+      let logout_url = "/djangoapp/logout";
+      const res = await fetch (logout_url, {
+        method: "GET"
+      });
+
+      const user = await res.json();
+
+      if (user){
+        let username = sessionStorage.getItem("username");
+        sessionStorage.removeItem("username");
+        window.location.href = window.location.origin;
+        window.location.reload();
+        alert("Logging out "+username+"...");
+      } else {
+        alert("The user could not be logged out.");
+      }
+    };
     
     //The default home page items are the login details panel
     let home_page_items = <div></div>
@@ -14,6 +33,7 @@ const Header = () => {
     if(curr_user !== null && curr_user !==""){
         home_page_items = <div className="input_panel">
              <text className="username">{sessionStorage.getItem("username")}</text>
+             <a className="nav_item" href="/djangoapp/logout" onClick={logout}>Logout</a>
         </div>
     }
     
