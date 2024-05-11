@@ -62,7 +62,7 @@ const Login = ({onClose}) => {
                         </div>
                         <div>
                         <span className="input_field">Password </span>
-                        <input name="psw" type="password"  placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)}/>            
+                        <input type="password" name="psw" placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)}/>            
                         </div>
                         <div>
                         <input className="action_button" type="submit" value="Login"/>
