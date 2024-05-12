@@ -42,7 +42,7 @@ def logout_user(request):
 def register_user(request):
     # Parse the request body
     data = json.loads(request.body)
-    username = data['username']
+    username = data['userName']
     password = data['password']
     first_name = data['firstName']
     last_name = data['lastName']
@@ -66,8 +66,8 @@ def register_user(request):
             )
         # Login the user and redirect the user to the list page
         login(request, user)
-        data = {"userName": "username", "status": "Authenticated"}
+        data = {"userName": username, "status": "Registration successfull"}
         return JsonResponse(data)
     else:
-        data = {"userName": "username", "error": "User already registered"}
+        data = {"userName": username, "error": "User already registered"}
         return JsonResponse(data)
