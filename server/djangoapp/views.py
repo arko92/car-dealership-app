@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 def login_user(request):
     # Parse the request body
     data = json.loads(request.body)
-    username = data['username']
+    username = data['userName']
     password = data['password']
     # check if the provided login credentials can be authenticated
     user = authenticate(username=username, password=password)
