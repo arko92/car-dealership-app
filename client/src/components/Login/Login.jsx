@@ -32,13 +32,17 @@ const Login = ({onClose}) => {
         const user = await res.json();
 
         //Check if the user is authenticated
-        if (user.status !=null && user.status === "Authenticated") {
+
+        if (user.status != null && user.status === "Authenticated") {
             sessionStorage.setItem("username", user.userName); // Set the username in the Header component
-            setOpen(false);
+            setOpen(false); // Redirect to the home page
         }
         else {
+
             alert("Sorry the user couldnot be authenticated!")
+
         }
+       
     };
 
     if(!open) { // If login successfull,  redirects the user to the home page
@@ -58,11 +62,11 @@ const Login = ({onClose}) => {
                     <form className="login_panel" style={{}} onSubmit={login}>
                         <div>
                         <span className="input_field">Username </span>
-                        <input type="text"  name="username" placeholder="Username" className="input_field" onChange={(e) => setUserName(e.target.value)}/>
+                        <input type="text"  name="username" placeholder="Username" className="input_field" onChange={(e) => setUserName(e.target.value)} required/>
                         </div>
                         <div>
                         <span className="input_field">Password </span>
-                        <input type="password" name="psw" placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)}/>            
+                        <input type="password" name="psw" placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)} required/>            
                         </div>
                         <div>
                         <input className="action_button" type="submit" value="Login"/>
