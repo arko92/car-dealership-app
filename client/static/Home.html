@@ -19,7 +19,7 @@ const logout = async (e) => {
     sessionStorage.removeItem('username');
     window.location.href = window.location.origin; // The user is redirected to the homepage
     window.location.reload(); // reload the page
-    alert("Logging out "+username+"...")
+    alert(username+" successfully logged out ")
   }
   else {
     alert("The user could not be logged out.")
