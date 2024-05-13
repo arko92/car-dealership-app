@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="static/bootstrap.min.css">
 <script>
 
-const logout = async (e) => {
+const logout = async (e) => {  // ToDo: Solve delayed logout problem
 //Include the code for logout here.
   let logout_url = window.location.origin+"/djangoapp/logout";
   const res = await fetch(logout_url, {
