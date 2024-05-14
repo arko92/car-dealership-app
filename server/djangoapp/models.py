@@ -22,7 +22,7 @@ class CarModel(models.Model):
     A django model/ table with three fields: 
     1. Name of the car model
     2. Type of the car model
-    3. Year of the car model 
+    3. Year of the car model
     car_make is a forign key that references CarModel to the CarMake
     '''
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
