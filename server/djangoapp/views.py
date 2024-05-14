@@ -9,6 +9,9 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
+from .models import CarMake, CarModel
+from .populate import initiate
+
 logger = logging.getLogger(__name__)
 
 
@@ -71,3 +74,33 @@ def register_user(request):
     else:
         data = {"userName": username, "error": "User already registered"}
         return JsonResponse(data)
+
+
+def get_cars(requests):
+    '''
+    Returns a list of all cars models in the database
+    '''
+
+    # Get number of cars from the database
+    # ToDo: Check if the use of filter() is redundant?
+    count = CarMake.objects.filter().count()
+
+    if (count == 0):
+        '''
+        If no cars are found, populate the CarMake and CarModel tables with
+        some user data
+        '''
+        initiate()
+
+    # Get all car models and the related car makes from the database
+    car_models = CarModel.objects.select_related('car_make')
+    # Create a list to store the car data
+    cars = []
+
+    for car_model in car_models:
+        cars.append({
+            'CarMake': car_model.car_make.name,
+            'CarModel': car_model.name
+        })
+    # Return the list of cars as a JSON response
+    return JsonResponse({'CarModels': cars})
