@@ -9,6 +9,8 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
+from server.djangoapp.restapi import get_request
+
 from .models import CarMake, CarModel
 from .populate import initiate
 
@@ -76,7 +78,7 @@ def register_user(request):
         return JsonResponse(data)
 
 
-def get_cars(requests):
+def get_cars(request):
     '''
     Returns a list of all cars models in the database
     '''
@@ -104,3 +106,19 @@ def get_cars(requests):
         })
     # Return the list of cars as a JSON response
     return JsonResponse({'CarModels': cars})
+
+
+def get_dealerships(request, state="All"):
+    '''
+    Returns a list of all the dealerships in the database
+    or the dealerships in a particular state
+    '''
+    # If "All" is selected from the dropdown, get all the dealerships
+    # Else, get the dealerships in a particular state
+    if state == "All":
+        endpoint = "/fetchDealers"  # use this endpoint to get all the dealerships
+    else:
+        endpoint = "/fetchDealers/" + state  # use this endpoint to get dealerships in a particular state
+    # Get all the dealerships from the database
+    dealerships = get_request(endpoint)
+    return JsonResponse({"status": 200, "dealers": dealerships})
