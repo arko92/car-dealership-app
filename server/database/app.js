@@ -4,8 +4,8 @@ const  cors = require('cors'); // To allow cross-origin requests
 const mongoose = require('mongoose'); // To connect to the MongoDB database
 const fs = require('fs'); // To read in the data from the JSON files
 
-const app = express();
-const port = 3030;
+const app = express(); 
+const port = 3030; // port where server will be listened
 
 app.use(cors()); // allow cross-origin requests
 app.use(require('body-parser').urlencoded({extended: false})); // parse application/x-www-form-urlencoded
@@ -17,7 +17,7 @@ const dealerships_data = JSON.parse(fs.readFileSync('./data/dealerships.json', '
 mongoose.connect("mongodb://localhost:27017/",{'dbName':'dealershipsDB'}); 
 
 // import data schemas 
-const Dealerships = require('./dealership');
+const Dealerships = require('./dealership'); // dealership data schema
 
 
 // insert data into the database
