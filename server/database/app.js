@@ -43,9 +43,28 @@ app.get('/fetchDealers', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Error fetching documents' });
     }
-})
+});
 
+// Get a specific dealership from the database for an id
+app.get('/fetchDealer/:id', async (req, res) => {
+    try {
+        const documents = await Dealerships.find({id: req.params.id});
+        res.json(documents);
+      } catch (error) {
+        res.status(500).json({error:'Error fetching documents'});
+    
+      }
+});
 
+// Get a specific dealership from the database for a state
+app.get('/fetchDealers/:state', async (req, res) => {
+    try {
+        const documents = await Dealerships.find({state: req.params.state});
+        res.json(documents);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching documents' });
+    }
+});
 
 // Start the server
 app.listen(port, () => { 
