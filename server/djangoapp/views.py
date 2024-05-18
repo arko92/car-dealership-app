@@ -9,7 +9,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
-from server.djangoapp.restapi import get_request
+from .restapi import get_request
 
 from .models import CarMake, CarModel
 from .populate import initiate
