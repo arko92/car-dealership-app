@@ -2,9 +2,9 @@
 const express = require('express'); // To create the server
 const cors = require('cors'); // To allow cross-origin requests
 const mongoose = require('mongoose'); // To connect to the MongoDB database
+const { MongoClient } = require('mongodb'); 
 const fs = require('fs'); // To read in the data from the JSON files
 require('dotenv').config(); // To read in the environment variables
-const { MongoClient } = require('mongodb');
 
 const app = express(); 
 const port = 3030; // port where server will be listened
@@ -25,21 +25,23 @@ mongoose.connect(uri)
 // MongoDB client connection
 const client = new MongoClient(uri);
 
+// Connect to the database
 (async () => { 
     try {
       await client.connect();
     } catch (e) {
       console.log('Error: ', e.message);
     }
-})(); // connect to the database
+})(); 
 
 // Import data schemas 
 const Dealerships = require('./dealership'); // dealership data schema
 
+// Insert data into the database
 (async () => {
     try {
-        const count = await Dealerships.countDocuments();
-        if (count === 0) {
+        const count = await Dealerships.countDocuments(); 
+        if (count === 0) { // check if the dealership data already exists
             await Dealerships.insertMany(dealerships_data.dealerships);
             console.log('Dealership data inserted successfully');
         } else {
@@ -48,7 +50,7 @@ const Dealerships = require('./dealership'); // dealership data schema
     } catch (error) {
         console.log('Error in processing data ', error);
     }
-})(); // insert data into the database
+})(); 
 
 // Express route to home
 app.get('/', async (req, res) => {
