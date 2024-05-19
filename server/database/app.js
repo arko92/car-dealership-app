@@ -25,18 +25,18 @@ mongoose.connect(uri)
 // MongoDB client connection
 const client = new MongoClient(uri);
 
-(async () => { // connect to the database
+(async () => { 
     try {
       await client.connect();
     } catch (e) {
       console.log('Error: ', e.message);
     }
-})();
+})(); // connect to the database
 
 // Import data schemas 
 const Dealerships = require('./dealership'); // dealership data schema
 
-const fill_data = async () => {
+(async () => {
     try {
         const count = await Dealerships.countDocuments();
         if (count === 0) {
@@ -48,9 +48,7 @@ const fill_data = async () => {
     } catch (error) {
         console.log('Error in processing data ', error);
     }
-}
-
-fill_data(); // fill the database with data
+})(); // insert data into the database
 
 // Express route to home
 app.get('/', async (req, res) => {
