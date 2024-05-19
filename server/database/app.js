@@ -1,8 +1,10 @@
 
 const express = require('express'); // To create the server
-const  cors = require('cors'); // To allow cross-origin requests
+const cors = require('cors'); // To allow cross-origin requests
 const mongoose = require('mongoose'); // To connect to the MongoDB database
 const fs = require('fs'); // To read in the data from the JSON files
+require('dotenv').config(); // To read in the environment variables
+const { MongoClient } = require('mongodb');
 
 const app = express(); 
 const port = 3030; // port where server will be listened
@@ -13,22 +15,42 @@ app.use(require('body-parser').urlencoded({extended: false})); // parse applicat
 // Read in the data from the JSON files
 const dealerships_data = JSON.parse(fs.readFileSync('./data/dealerships.json', 'utf8'));
 
-// Connect to the MongoDB database
-mongoose.connect("mongodb://localhost:27017/",{'dbName':'dealershipsDB'}); 
+const uri = process.env.MONGO_URI; // get mongodb server URI
 
-// import data schemas 
+// Mongoose connection
+mongoose.connect(uri) 
+  .then(() => console.log('Mongoose connected'))
+  .catch(err => console.log('Mongoose connection error: ', err));
+
+// MongoDB client connection
+const client = new MongoClient(uri);
+
+(async () => { // connect to the database
+    try {
+      await client.connect();
+    } catch (e) {
+      console.log('Error: ', e.message);
+    }
+})();
+
+// Import data schemas 
 const Dealerships = require('./dealership'); // dealership data schema
 
+const fill_data = async () => {
+    try {
+        const count = await Dealerships.countDocuments();
+        if (count === 0) {
+            await Dealerships.insertMany(dealerships_data.dealerships);
+            console.log('Dealership data inserted successfully');
+        } else {
+            console.log('Dealership data already exists, skipping data insertion');
+        }
+    } catch (error) {
+        console.log('Error in processing data ', error);
+    }
+}
 
-// insert data into the database
-try {
-    Dealerships.deleteMany({}).then(()=>{
-      Dealerships.insertMany(dealerships_data.dealerships);
-    });
-    
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching documents' });
-  }
+fill_data(); // fill the database with data
 
 // Express route to home
 app.get('/', async (req, res) => {
