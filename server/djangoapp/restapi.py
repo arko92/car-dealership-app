@@ -23,3 +23,14 @@ def get_request(endpoint, **kwargs):
         return response.json()
     except Exception as e:
         print(e)
+
+
+# POST request to insert a new review
+def post_review(review_data):
+    request_url = backend_url + "/insert_review"
+    try:
+        response = requests.post(request_url, json=review_data)
+        print(review_data)
+        return response.json()
+    except Exception as e:
+        print(e)

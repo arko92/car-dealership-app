@@ -9,7 +9,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
-from .restapi import get_request
+from .restapi import get_request, post_review
 
 from .models import CarMake, CarModel
 from .populate import initiate
@@ -105,7 +105,7 @@ def get_cars(request):
             'CarModel': car_model.name
         })
     # Return the list of cars as a JSON response
-    return JsonResponse({'CarModels': cars})
+    return JsonResponse({"status": 200, 'CarModels': cars})
 
 
 def get_dealerships(request, state="All"):
@@ -134,3 +134,28 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status": 200, "dealer": dealer_details})
     else:
         return JsonResponse({"status": 400, "error": "Invalid dealer id"})
+
+
+def get_dealer_reviews(request, dealer_id):
+    '''
+    Returns the reviews for a particular dealer
+    '''
+    if (dealer_id):
+        endpoint = "/fetchReviews/dealer/" + str(dealer_id)  # endpoint to get reviews for a particular dealer
+        reviews = get_request(endpoint)
+        return JsonResponse({"status": 200, "reviews": reviews})
+    else:
+        return JsonResponse({"status": 400, "error": "Invalid dealer id"})
+
+@csrf_exempt
+def add_review(request):
+    '''
+    Adds a review for a particular dealer
+    '''
+    if not request.user.is_anonymous:
+        review_data = json.loads(request.body)
+        try:
+            post_review(review_data)
+            return JsonResponse({"status": 200, "message": "Review added successfully"})
+        except Exception:
+            return JsonResponse({"status": 403, "message": "Unauthorized"})

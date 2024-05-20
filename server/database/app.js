@@ -105,15 +105,17 @@ app.get('/fetchDealers/:state', async (req, res) => {
     }
 });
 
+// Get all reviews from the database
 app.get('/fetchReviews', async (req, res) => {
     try {
-        const reviews = await Reviews.find();
+        const reviews = await Reviews.find(); // 
         res.json(reviews);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching documents' });
     }
 });
 
+// Get all reviews from the database for a specific dealer
 app.get('/fetchReviews/dealer/:id', async (req, res) => {
     try {
         const documents = await Reviews.find({dealership: req.params.id});
@@ -124,10 +126,28 @@ app.get('/fetchReviews/dealer/:id', async (req, res) => {
 });
 
 // Express route to insert a review
-// app.post('/insert_review', async (req, res) => {
-//     review_data = JSON.parse(req.body);
-
-// } )
+app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
+    review_data = JSON.parse(req.body); // parse the request body
+    const documents = await Reviews.find().sort({id: -1}); // fetches documents from the 'Reviews' collection in the database and sorts them in descending order based on the 'id' field.
+    const new_id = documents[0].id + 1; // increment the id by 1 for a new review entry
+    const review = new Reviews({
+        "id": new_id, 
+        "name": review_data.name, // name of the user giving the review
+        "dealership": review_data.dealership,
+        "review": review_data.review,
+        "purchase": review_data.purchase,
+        "purchase_date": review_data.purchase_date,
+        "car_make": review_data.car_make,
+        "car_model": review_data.car_model,
+        "car_year": review_data.car_year,
+    });
+    try {
+        const savedReview = await review.save(); // saving review entry
+        res.json(savedReview); // return the saved review entry
+    } catch (error) {
+        res.status(500).json({ error: 'Error inserting review' });
+    }
+} );
 
 // Start the server
 app.listen(port, () => { 
