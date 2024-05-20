@@ -14,6 +14,7 @@ app.use(require('body-parser').urlencoded({extended: false})); // parse applicat
 
 // Read in the data from the JSON files
 const dealerships_data = JSON.parse(fs.readFileSync('./data/dealerships.json', 'utf8'));
+const reviews_data = JSON.parse(fs.readFileSync('./data/reviews.json', 'utf8'));
 
 const uri = process.env.MONGO_URI; // get mongodb server URI
 
@@ -36,12 +37,15 @@ const client = new MongoClient(uri);
 
 // Import data schemas 
 const Dealerships = require('./dealership'); // dealership data schema
+const Reviews = require('./review'); // review data schema
 
 // Insert data into the database
 (async () => {
+    // Insert dealership data into the database, i.e. a collection of deaelerships
     try {
-        const count = await Dealerships.countDocuments(); 
-        if (count === 0) { // check if the dealership data already exists
+        const count_dealers = await Dealerships.countDocuments(); // count the number of documents in the dealership collection
+        const count_reviews = await Reviews.countDocuments();
+        if (count_dealers === 0) { // check if the dealership data already exists
             await Dealerships.insertMany(dealerships_data.dealerships);
             console.log('Dealership data inserted successfully');
         } else {
@@ -50,6 +54,19 @@ const Dealerships = require('./dealership'); // dealership data schema
     } catch (error) {
         console.log('Error in processing data ', error);
     }
+    // Insert reviews data into the database, i.e. a collection of reviews
+    try {
+        const count_reviews = await Reviews.countDocuments();
+        if (count_reviews === 0) { // check if the reviews data already exists
+            await Reviews.insertMany(reviews_data.reviews);
+            console.log('Reviews data inserted successfully');
+        } else {
+            console.log('Reviews data already exists, skipping data insertion');
+        }
+    } catch (error) {
+        console.log('Error in processing data ', error);
+    }    
+
 })(); 
 
 // Express route to home
@@ -87,6 +104,30 @@ app.get('/fetchDealers/:state', async (req, res) => {
         res.status(500).json({ error: 'Error fetching documents' });
     }
 });
+
+app.get('/fetchReviews', async (req, res) => {
+    try {
+        const reviews = await Reviews.find();
+        res.json(reviews);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching documents' });
+    }
+});
+
+app.get('/fetchReviews/dealer/:id', async (req, res) => {
+    try {
+        const documents = await Reviews.find({dealership: req.params.id});
+        res.json(documents);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching documents' });
+    }
+});
+
+// Express route to insert a review
+// app.post('/insert_review', async (req, res) => {
+//     review_data = JSON.parse(req.body);
+
+// } )
 
 // Start the server
 app.listen(port, () => { 
