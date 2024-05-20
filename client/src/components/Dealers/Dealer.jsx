@@ -3,10 +3,12 @@ import {useParams} from "react-router-dom";
 import Header from "../Header/Header";
 import './Dealers.css'
 import '../../assets/style.css'
+import review_icon from '../../assets/reviewicon.png'
 const Dealer = () => {
     const [dealer,setDealer] = useState({}); // state for dealer data
     const [reviews,setReviews] = useState([]);
     const [unreviewed, setUnreviewed] = useState(false);
+    const [postReview, setPostReview] = useState(<></>);
 
     let params = useParams(); // get the id from the url
 
@@ -17,6 +19,7 @@ const Dealer = () => {
 
     let dealer_url = root_url+`djangoapp/dealer/${id}`;
     let review_url = root_url+`djangoapp/reviews/dealer/${id}`;
+    let post_review_url = root_url+`postreview/${id}`;
 
     // get dealer details
     const get_dealer = async () => {
@@ -24,6 +27,7 @@ const Dealer = () => {
             method: "GET"
           });        
         const data = await res.json();
+        console.log(data);
         if (data.status === 200){
             let  dealer = Array.from(data.dealer);
             setDealer(dealer[0]); 
@@ -38,9 +42,10 @@ const Dealer = () => {
             method: "GET"
           });
         const data = await res.json();
+        console.log(data);
         if (data.status === 200){
             if(data.reviews.length > 0){
-                setReviews(data.reviews)
+                setReviews(data.reviews);
               } else {
                 setUnreviewed(true);
               }
@@ -52,13 +57,16 @@ const Dealer = () => {
     useEffect(() => {
         get_dealer();
         get_reviews();
+        if(sessionStorage.getItem("username")) {
+            setPostReview(<a href={post_review_url}><img src={review_icon} style={{width:'10%',marginLeft:'10px',marginTop:'10px'}} alt='Post Review'/></a>)
+          }
     },[]);
 
     return(
         <div>
             <Header/>
             <div style={{marginTop: "10px"}}>
-                <h1 style={{color:"grey"}}>{dealer.full_name}</h1>
+                <h1 style={{color:"grey"}}>{dealer.full_name}{postReview}</h1>
                 <h4  style={{color:"grey"}}>City - {dealer.city}, Address - {dealer.address}, Zip - {dealer.zip}, State - {dealer.state} </h4>
             </div>
             <div className="reviews_panel">
