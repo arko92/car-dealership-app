@@ -122,3 +122,15 @@ def get_dealerships(request, state="All"):
     # Get all the dealerships from the database
     dealerships = get_request(endpoint)
     return JsonResponse({"status": 200, "dealers": dealerships})
+
+
+def get_dealer_details(request, dealer_id):
+    '''
+    Returns the details of a particular dealer
+    '''
+    if (dealer_id):
+        endpoint = "/fetchDealer/" + str(dealer_id)  # endpoint to get details of a particular dealer
+        dealer_details = get_request(endpoint)
+        return JsonResponse({"status": 200, "dealer": dealer_details})
+    else:
+        return JsonResponse({"status": 400, "error": "Invalid dealer id"})
