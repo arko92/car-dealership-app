@@ -5,6 +5,7 @@ import './Dealers.css'
 import '../../assets/style.css'
 import review_icon from '../../assets/reviewicon.png'
 import '../../assets/bootstrap.min.css'
+import sentiment_emoticon from '../../assets/positive.png'
 const Dealer = () => {
     const [dealer,setDealer] = useState({}); // state for dealer data
     const [reviews,setReviews] = useState([]);
@@ -66,33 +67,47 @@ const Dealer = () => {
     return(
         <div>
             <Header/>
-            <div style={{marginTop: "10px"}}>
-                <h1 style={{color:"grey"}}>{dealer.full_name}{postReview}</h1>
-                <h4  style={{color:"grey"}}>City - {dealer.city}, Address - {dealer.address}, Zip - {dealer.zip}, State - {dealer.state} </h4>
+            <div className="container-fluid mt-2">
+                <div className="row justify-content-center">
+                    <div className="col-md-8 col-lg-6">
+                    <div className="d-flex flex-column align-items-center mb-3">
+                        <h1 className="text-secondary mb-2">{dealer.full_name}{postReview}</h1>
+                        <h5 className="text-muted">
+                        {dealer.city}, {dealer.address}, {dealer.zip}, {dealer.state}
+                        </h5>
+                    </div>
+                    </div>
+                </div>
             </div>
             <div className="reviews_panel">
 
                 {reviews.length === 0 && unreviewed === false ? ( // if the reviews array is empty, display the loading message
-                    <text>Loading Reviews....</text>
-                    ):  unreviewed === true? <div>No reviews yet! </div> :
+                    <h4 className="text-secondary d-flex flex-column container-fluid align-items-center">Loading Reviews....</h4>
+                    ):  unreviewed === true? <h4 className="text-secondary d-flex flex-column container-fluid align-items-center">No reviews yet! </h4> :
                     reviews.map(review => ( 
 
-                        <div className="container-fluid mt-5">
-                            <div className="card shadow-sm mb-4">
+                        <div className="container-fluid mt-2">
+                        <div className="row justify-content-center">
+                            <div className="col-md-8 col-lg-6">
+                            <div className="card p-3 mb-1 bg-white rounded " style={{border: "1px solid grey", boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.19)'}} >
                                 <div className="card-body">
-                                    <div className="d-flex mb-3">
-                                        {/*<img src="https://via.placeholder.com/64" alt="Sentiment emoticon" className="img-fluid rounded-circle mr-3"/>*/}
-                                        <div>
-                                            <h5 className="card-title mb-1">{review.name}</h5>
-                                            <p className="text-muted mb-0">Car make: {review.car_make} | Car model: {review.car_model} | Car year: {review.car_year} </p>
-
-                                        </div>
+                                <div className="d-flex mb-1 flex-column flex-md-row align-items-center">
+                                    {/* Todo: put sentiment emoticon*/}
+                                    <img src={sentiment_emoticon} alt="Sentiment emoticon" style={{ width: '64px', height: '64px' }} className="img-fluid rounded-circle mb-2 mb-md-0 mr-md-3"/>
+                                    <div className="text-center text-md-left">
+                                        <h5 className="card-title mb-1">{review.name}</h5>
+                                        <p className="text-muted mb-0">
+                                            Car make: {review.car_make} | Car model: {review.car_model} | Car year: {review.car_year}
+                                        </p>
+                                        <p className="card-text">{review.review}</p>
                                     </div>
-                                    <p className="card-text">{review.review}</p>
+                                </div>
                                 </div>
                             </div>
-
+                            </div>
                         </div>
+                        </div>
+
 
                 ))};
 
