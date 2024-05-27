@@ -4,6 +4,7 @@ import Header from "../Header/Header";
 import './Dealers.css'
 import '../../assets/style.css'
 import review_icon from '../../assets/reviewicon.png'
+import '../../assets/bootstrap.min.css'
 const Dealer = () => {
     const [dealer,setDealer] = useState({}); // state for dealer data
     const [reviews,setReviews] = useState([]);
@@ -75,17 +76,29 @@ const Dealer = () => {
                     <text>Loading Reviews....</text>
                     ):  unreviewed === true? <div>No reviews yet! </div> :
                     reviews.map(review => ( 
-                        <div className="review_panel">
-                            {/*Todo: put sentiment emoticon */}
-                            <div className='review'>{review.review}</div>
-                            <div className="reviewer">{review.name} {review.car_make} {review.car_model} {review.car_year}</div>
+
+                        <div className="container-fluid mt-5">
+                            <div className="card shadow-sm mb-4">
+                                <div className="card-body">
+                                    <div className="d-flex mb-3">
+                                        {/*<img src="https://via.placeholder.com/64" alt="Sentiment emoticon" className="img-fluid rounded-circle mr-3"/>*/}
+                                        <div>
+                                            <h5 className="card-title mb-1">{review.name}</h5>
+                                            <p className="text-muted mb-0">Car make: {review.car_make} | Car model: {review.car_model} | Car year: {review.car_year} </p>
+
+                                        </div>
+                                    </div>
+                                    <p className="card-text">{review.review}</p>
+                                </div>
+                            </div>
+
                         </div>
+
                 ))};
 
             </div>
         </div>
     )
-
 }    
 
 export default Dealer;
