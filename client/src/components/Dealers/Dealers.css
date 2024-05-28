@@ -1,4 +1,4 @@
-table{
+/* table{
     margin:5px;
     padding:10px;
     border: grey solid 1px;
@@ -11,7 +11,7 @@ table{
     border:solid grey .5px;
     text-align: center;
     font-size: large;
-  }
+  } */
   
   .review_panel{
     display: flex;
@@ -35,7 +35,7 @@ table{
     font-size: larger;
   }
 
-  th{
+/*   th{
     padding:5px;
     align-self: center;
     text-align: center;
@@ -43,7 +43,7 @@ table{
     margin-bottom: 1cm;
     vertical-align: middle;
     color: black;
-  }
+  } */
 
   .reviews_panel {
     display: flex;
