@@ -4,9 +4,11 @@ import React, {useEffect, useState} from 'react'
 
 import Header from '../Header/Header'
 
-import './Dealers.css'
+//import './Dealers.css'
 
 import review_icon from "../../assets/reviewicon.png"
+
+import '../../assets/bootstrap.min.css'
 
 const Dealers = () => {
 
@@ -61,45 +63,60 @@ const Dealers = () => {
   return ( 
     <div>
       <Header/>
-      <table className='table'>
-        <tr>
-          <th>ID</th>
-          <th>Dealer Name</th>
-          <th>City</th>
-          <th>Address</th>
-          <th>Zip</th>
-          <th> {/* Select element to filter by state */}
-            <select name="state" id="state" onChange={(e) => get_dealers_by_state(e.target.value)}>   {/* Dropdown Select element to filter by state */}
-              <option value="" selected disabled>State</option> {/* Default option selected */} 
-              <option value="All">All states</option> {/* Option to show all states */}
-              {states.map(state => ( // map through the states array and display the options
-                <option value={state}>{state}</option> // option for each state
-              ))}
-            </select>
-          </th>
-          { isLoggedIn ? (  // if the user is logged in, display the review button
-              <th>Review Dealer</th> 
-            ) : <></>
-          }
-        </tr>
-        {dealersList.map(dealer => ( // map through the dealersList array and fill up the rows
-          <tr>
-            <td>{dealer.id}</td> 
-            <td><a href={"/dealer/"+dealer.id}>{dealer.full_name}</a></td> 
-            <td>{dealer.city}</td> 
-            <td>{dealer.address}</td>
-            <td>{dealer.zip}</td>
-            <td>{dealer.state}</td>
-            { isLoggedIn ? (  // if the user is logged in, display the review button
-              <td><a href={`/postreview/${dealer.id}`}><img src={review_icon} className="review_icon" alt="Post Review"/></a></td>
-              ) : <></>
-            }
-          </tr>
-        ))}
-
-      </table>
-
+      <div className="container-fluid mt-4">
+          <div className="table-responsive">
+            <table className="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Dealer Name</th>
+                  <th scope="col">City</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Zip</th>
+                  <th scope="col">
+                    <select
+                      name="state"
+                      id="state"
+                      className="form-control"
+                      onChange={(e) => get_dealers_by_state(e.target.value)}
+                    >
+                      <option value="" selected disabled>State</option>
+                      <option value="All">All states</option>
+                      {states.map((state, index) => (
+                        <option key={index} value={state}>{state}</option>
+                      ))}
+                    </select>
+                  </th>
+                  { isLoggedIn ? (  // if the user is logged in, display the review button
+                        <th scope='col'>Review Dealer</th> 
+                      ) : <></>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                {dealersList.map((dealer, index) => (
+                  <tr key={index}>
+                    <td>{dealer.id}</td>
+                    <td><a href={`/dealer/${dealer.id}`}>{dealer.full_name}</a></td>
+                    <td>{dealer.city}</td>
+                    <td>{dealer.address}</td>
+                    <td>{dealer.zip}</td>
+                    <td>{dealer.state}</td>
+                    {isLoggedIn && (
+                      <td>
+                        <a href={`/postreview/${dealer.id}`}>
+                          <img src={review_icon} className="review_icon" alt="Post Review" style={{ width: '20px', height: '20px' }} />
+                        </a>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
     </div>
+  </div>
+  
   )
 }
 
