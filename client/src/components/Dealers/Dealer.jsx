@@ -60,14 +60,23 @@ const Dealer = () => {
         get_dealer();
         get_reviews();
         if(sessionStorage.getItem("username")) {
+            
             setPostReview(
-                <a href={post_review_url}>
-                  <img
-                    src={review_icon}
-                    style={{ width: '50px', height: '50px', marginLeft: '10px', marginTop: '10px' }}
-                    alt='Post Review'
-                  />
-                </a>
+                <div className="d-flex justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="box">Post a review</div>
+                    </div>
+                    <div>
+                        <a href={post_review_url}>
+                        <img
+                            src={review_icon}
+                            style={{ width: '50px', height: '50px', marginLeft: '10px', marginTop: '10px' }}
+                            alt='Post Review'
+                        />
+                        </a>
+                    </div>
+
+                </div>
               );          
             }
     },[]);
@@ -84,7 +93,7 @@ const Dealer = () => {
                         {dealer.city}, {dealer.address}, {dealer.zip} {dealer.state}
                         </h5>
                         <div className="d-flex justify-content-center mt-3">
-                           <p>Post a review {postReview}</p> 
+                           <p>{postReview}</p> 
                         </div>
                     </div>
                     </div>
