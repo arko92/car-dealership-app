@@ -74,6 +74,16 @@ img{
   margin-top:3%
 }
 
+.navbar-user {
+  height: 1in;
+}
+
+@media (max-width: 991px) {
+  .navbar-user{
+    height: auto;
+  }
+}
+
 .navitems{
   display: flex;
   flex-direction: row;
