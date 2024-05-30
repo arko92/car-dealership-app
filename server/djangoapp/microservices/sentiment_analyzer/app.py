@@ -1,32 +1,50 @@
+import os
 import json
-from flask import Flask
+from flask import Flask, request, jsonify
 from nltk.sentiment import SentimentIntensityAnalyzer
-app = Flask("Sentiment Analyzer")
+
+app = Flask(__name__)
 
 sia = SentimentIntensityAnalyzer()
 
 
 @app.route("/", methods=["GET"])
 def home():
-    return "Welcome to the Sentiment Analyzer. \
-    Use /analyze/text to get the sentiment"
+    return "Welcome to the Sentiment Analyzer. Use /analyze/<text> to get the sentiment"
 
-# Analyze the text and return the sentiment
+
 @app.route("/analyze/<input_text>", methods=["GET"])
 def analyze_text(input_text):
     scores = sia.polarity_scores(input_text)
-    print(scores)
     pos = float(scores['pos'])
     neg = float(scores['neg'])
     neu = float(scores['neu'])
     res = "positive"
-    if (neg > pos and neg > neu):
+    if neg > pos and neg > neu:
         res = "negative"
-    elif (neu > neg and neu > pos):
+    elif neu > neg and neu > pos:
         res = "neutral"
-    res = json.dumps({"sentiment": res})
+    res = jsonify({"sentiment": res})
     return res
 
 
-if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=3000)
+def lambda_handler(event, context):
+    # Extract the necessary information from the event, providing defaults if keys are missing
+    path = event.get('path', '/')
+    http_method = event.get('httpMethod', 'GET')
+    headers = event.get('headers', {})
+    query_string_parameters = event.get('queryStringParameters', '')
+
+    with app.test_request_context(
+        path=path,
+        base_url='https://' + headers.get('Host', 'localhost'),
+        query_string=query_string_parameters,
+        method=http_method,
+        headers=headers
+    ):
+        response = app.full_dispatch_request()
+        return {
+            'statusCode': response.status_code,
+            'headers': dict(response.headers),
+            'body': response.get_data(as_text=True)
+        }

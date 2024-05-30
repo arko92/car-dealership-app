@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:
+  FlaskFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      CodeUri: .
+      Timeout: 300
+      MemorySize: 128
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          NLTK_DATA: /var/task/nltk_data
+      Events:
+        FlaskApi:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL for Prod stage for the Flask function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Export:
+      Name: "ApiGatewayUrl"
