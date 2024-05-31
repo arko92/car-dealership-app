@@ -78,7 +78,8 @@ app.get('/', async (req, res) => {
 app.get('/fetchDealers', async (req, res) => {
     try {
         const dealerships = await Dealerships.find();
-        res.json(dealerships);
+        const sortedDealerships = [...dealerships].sort((a,b) => a.id - b.id) // sorted dealers list
+        res.json(sortedDealerships);
     } catch (error) {
         res.status(500).json({ error: 'Error fetching documents' });
     }
