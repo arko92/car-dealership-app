@@ -5,7 +5,10 @@ import './Dealers.css'
 import '../../assets/style.css'
 import review_icon from '../../assets/reviewicon.png'
 import '../../assets/bootstrap.min.css'
-import sentiment_emoticon from '../../assets/positive.png'
+import positive_icon from '../../assets/positive.png'
+import negative_icon from '../../assets/negative.png'
+import neutral_icon from '../../assets/neutral.png'
+
 const Dealer = () => {
     const [dealer,setDealer] = useState({}); // state for dealer data
     const [reviews,setReviews] = useState([]);
@@ -55,6 +58,18 @@ const Dealer = () => {
             console.log("error");
         }
     }
+
+    // get the sentiment emoticon based on the sentiment of user reviews
+    const get_sentiment_emoticon = (sentiment) => {
+        if (sentiment === "positive"){
+            return positive_icon;
+        } else if (sentiment === "negative") {
+            return negative_icon;
+        } else{
+            return neutral_icon;
+        }
+    }
+
 
     useEffect(() => {
         get_dealer();
@@ -112,8 +127,7 @@ const Dealer = () => {
                             <div className="card p-3 mb-1 bg-white rounded " style={{border: "1px solid grey", boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.19)'}} >
                                 <div className="card-body">
                                 <div className="d-flex mb-1 flex-column flex-md-row align-items-center">
-                                    {/* Todo: put sentiment emoticon*/}
-                                    <img src={sentiment_emoticon} alt="Sentiment emoticon" style={{ width: '64px', height: '64px' }} className="img-fluid rounded-circle mb-2 mb-md-0 mr-md-3"/>
+                                    <img src={get_sentiment_emoticon(review['sentiment'])} alt="Sentiment emoticon" style={{ width: '64px', height: '64px' }} className="img-fluid rounded-circle mb-2 mb-md-0 mr-md-3"/>
                                     <div className="text-center text-md-left">
                                         <h5 className="card-title mb-1">{review.name}</h5>
                                         <p className="text-muted mb-0">
