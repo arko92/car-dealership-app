@@ -9,7 +9,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 
-from .restapi import get_request, post_review
+from .restapi import get_request, post_review, analyze_review_sentiments
 
 from .models import CarMake, CarModel
 from .populate import initiate
@@ -135,17 +135,26 @@ def get_dealer_details(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "error": "Invalid dealer id"})
 
-
+@csrf_exempt
 def get_dealer_reviews(request, dealer_id):
     '''
     Returns the reviews for a particular dealer
     '''
     if (dealer_id):
         endpoint = "/fetchReviews/dealer/" + str(dealer_id)  # endpoint to get reviews for a particular dealer
-        reviews = get_request(endpoint)
+        reviews = get_request(endpoint)  # get reviews from the database
+        print("Fetched reviews:", reviews)  # Debug log to check the fetched reviews
+        for review_detail in reviews:
+            response = analyze_review_sentiments(review_detail['review'])
+            print(json.dumps(response["sentiment"]))
+            # review_detail.update({"sentiment": response["sentiment"]})
+
+            review_detail["sentiment"] = response["sentiment"]
+        print('Updated reviews', reviews)
         return JsonResponse({"status": 200, "reviews": reviews})
     else:
         return JsonResponse({"status": 400, "error": "Invalid dealer id"})
+
 
 @csrf_exempt
 def add_review(request):
@@ -159,3 +168,13 @@ def add_review(request):
             return JsonResponse({"status": 200, "message": "Review added successfully"})
         except Exception:
             return JsonResponse({"status": 403, "message": "Unauthorized"})
+        
+
+@csrf_exempt
+def get_sentiment(request, review):
+    '''
+    Returns the sentiment of a review
+    '''
+    if (review):
+        sentiment = get_sentiment(review)
+        return JsonResponse({"status": 200, "sentiment": sentiment})
