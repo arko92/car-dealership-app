@@ -1,75 +1,96 @@
-# Deployment approach selection
-AWS SAM CLI serverless approach is choosen for the deployment of the database server:
 
-* To take advantage of the serverless model with automatic scaling and no infrastructure management
-* Because application process runtime is within aws lambda time out limits (i.e. < 15 mins)
-* To have a cost effective solution
+# Dealership and Review API
 
-The deployment using docker images on AWS ECS with Fragrate is not choosen:
-* Because of complex setup and managament
-* Because it requires detailed configuration of networking
-* Becasue it is less cost effective w.r.t resource management than aws lambda
+This is a Node.js application using Express, MongoDB, and Mongoose, deployed on AWS Elastic Beanstalk. It provides endpoints to manage and fetch dealership and review data.
 
-# Steps of deployment
+## Features
+
+- Connects to a MongoDB database
+- Provides RESTful API endpoints to fetch and insert dealership and review data
+- Configured to run in a serverless environment using AWS Elastic Beanstalk
 
 ## Prerequisites
 
-- [AWS CLI](https://aws.amazon.com/cli/)
-- [AWS SAM CLI](https://aws.amazon.com/serverless/sam/)
-- [Docker](https://www.docker.com/products/docker-desktop) (for local testing)
-- Node.js and npm
+- Node.js and npm installed
+- AWS CLI installed and configured
+- AWS Elastic Beanstalk CLI installed
 
-### 1. Install Dependencies
+## Setup
 
-```sh
-npm install
-```
+1. **Install dependencies:**
 
-### 2. Create a SAM Template
-
-
-
-### 3. Modify Your Application for Lambda
-
-
-### 4. Build and Deploy the SAM Application
-
-1. **Build the SAM Application**
-
-   ```sh
-   sam build
+   ```bash
+   npm install
    ```
 
-2. **Deploy the SAM Application**
+2. **Create a `.env` file:**
 
-   ```sh
-   sam deploy --guided
+   Create a `.env` file in the root directory with the following content:
+
+   ```env
+   MONGO_URI=your_mongodb_connection_string
+   PORT=3030
    ```
 
-   During the guided deployment, you will be prompted to provide the following information:
-   - **Stack Name**: Enter a meaningful name for your stack (e.g., `nodejs-app-stack`).
-   - **AWS Region**: Choose your preferred AWS region (e.g., `us-east-1`).
-   - **MongoURI Parameter**: Provide the MongoDB connection URI.
-   - **Confirm changes before deploy**: Enter `y` to review changes before deploying.
-   - **Allow SAM CLI IAM role creation**: Enter `y` to allow SAM to create roles.
-   - **Save arguments to samconfig.toml**: Enter `y` to save your deployment settings.
+3. **Run the application locally:**
 
-### 6. Test the Deployed Application
+   ```bash
+   npm start
+   ```
 
-After deployment, you will receive the API Gateway endpoint URL. Use this URL to test your deployed Node.js application:
+   The application should be running on `http://localhost:3030`.
 
-```sh
-curl https://<api-id>.execute-api.<region>.amazonaws.com/Prod/
-curl https://<api-id>.execute-api.<region>.amazonaws.com/Prod/fetchDealers
-```
+## Deployment on AWS Elastic Beanstalk
 
-Replace `<api-id>` and `<region>` with the actual values from your deployment.
+### Steps to Deploy
 
-## Cleanup
+1. **Initialize Elastic Beanstalk application:**
 
-To delete the stack and all associated resources:
+   ```bash
+   eb init -p node.js dealership-api --region your-region
+   ```
 
-```sh
-aws cloudformation delete-stack --stack-name nodejs-app-stack
-```
+2. **Create Elastic Beanstalk environment:**
+
+   ```bash
+   eb create dealership-api-env
+   ```
+
+3. **Set environment variables:**
+
+   ```bash
+   eb setenv MONGO_URI=your_mongodb_connection_string
+   ```
+
+4. **Deploy the application:**
+
+   ```bash
+   eb deploy
+   ```
+
+### Reasons for Choosing Elastic Beanstalk
+
+1. **Ease of Use:**
+   AWS Elastic Beanstalk abstracts much of the underlying infrastructure, making it easy to deploy and manage applications without needing deep AWS knowledge.
+
+2. **Scalability:**
+   Elastic Beanstalk automatically handles the scaling of your application up or down based on demand.
+
+3. **Managed Environment:**
+   It provides a managed environment for running applications, including health monitoring, load balancing, and automatic provisioning.
+
+4. **Flexibility:**
+   You can customize your environment using configuration files and integrate other AWS services like RDS, S3, and more.
+
+5. **Cost-Effective:**
+   For small projects and portfolio applications, Elastic Beanstalk offers a cost-effective way to deploy and run applications with minimal management overhead.
+
+## API Endpoints
+
+- `GET /fetchDealers`: Fetch all dealerships.
+- `GET /fetchDealer/:id`: Fetch a dealership by ID.
+- `GET /fetchDealers/:state`: Fetch dealerships by state.
+- `GET /fetchReviews`: Fetch all reviews.
+- `GET /fetchReviews/dealer/:id`: Fetch reviews by dealership ID.
+- `POST /insert_review`: Insert a new review.
 
