@@ -1,3 +1,5 @@
+/* jshint esversion: 8 */
+
 const express = require('express');
 const serverless = require('serverless-http');
 const cors = require('cors');
