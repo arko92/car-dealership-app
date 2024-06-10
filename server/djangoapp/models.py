@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator
 
 class CarMake(models.Model):
     '''
-    A django model/ table with two fields: 
+    A django model/ table with two fields:
     1. Name of the car make
     2. Description of the car model
     '''
@@ -19,7 +19,7 @@ class CarMake(models.Model):
 
 class CarModel(models.Model):
     '''
-    A django model/ table with three fields: 
+    A django model/ table with three fields:
     1. Name of the car model
     2. Type of the car model
     3. Year of the car model

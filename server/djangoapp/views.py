@@ -135,6 +135,7 @@ def get_dealer_details(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "error": "Invalid dealer id"})
 
+
 @csrf_exempt
 def get_dealer_reviews(request, dealer_id):
     '''
@@ -168,7 +169,7 @@ def add_review(request):
             return JsonResponse({"status": 200, "message": "Review added successfully"})
         except Exception:
             return JsonResponse({"status": 403, "message": "Unauthorized"})
-        
+
 
 @csrf_exempt
 def get_sentiment(request, review):

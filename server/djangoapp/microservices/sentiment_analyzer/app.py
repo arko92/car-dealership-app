@@ -1,6 +1,4 @@
-import os
-import json
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from nltk.sentiment import SentimentIntensityAnalyzer
 
 app = Flask(__name__)
