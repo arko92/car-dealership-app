@@ -60,7 +60,7 @@ const Header = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light navbar-custom" style={{ backgroundColor: "darkturquoise" }}>
+      <nav className="navbar navbar-expand-lg navbar-light navbar-user" style={{ backgroundColor: "darkturquoise"}}>
         <div className="container-fluid">
           <h2 style={{ paddingRight: "5%" }}>Dealerships</h2>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
