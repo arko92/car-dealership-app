@@ -15,13 +15,14 @@ A full-stack application with a React frontend and a Django backend.
 - [Notes](#notes)
 
 ## About
-This project is a car dealership application built with a React frontend and a Django backend, containerized using Docker and managed with Docker Compose.
+This project is a car dealership application to have an overview of the local dealerships. It is built with a React frontend and a Django backend, containerized using Docker and managed with Docker Compose.
 
 ## Technologies
 - React
 - Django
 - Flask
 - AWS
+- github actions
 - mongoDB
 - PostgreSQL
 - Docker
