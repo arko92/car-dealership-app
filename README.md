@@ -1,8 +1,6 @@
 
 # CAR-DEALERSHIP-APP
 
-A full-stack application with a React frontend and a Django backend.
-
 ## Table of Contents
 - [About](#about)
 - [Technologies](#technologies)
@@ -15,18 +13,35 @@ A full-stack application with a React frontend and a Django backend.
 - [Notes](#notes)
 
 ## About
-This project is a car dealership application to have an overview of the local dealerships. It is built with a React frontend and a Django backend, containerized using Docker and managed with Docker Compose.
+A car dealership full-stack web application providing an overview of the available car dealers in the locality with user reviews. Registered user can also post reviews for the car dealers. The app includes a flask and AI based microservice to predict sentiments of user reviews. It is built with a React frontend and a Django backend, containerized using Docker and managed with Docker Compose. The microservice and backend is deployed on AWS.
 
 ## Technologies
+
+## Frontend
 - React
+## Backend
 - Django
 - Flask
-- AWS
-- github actions
-- mongoDB
+- nodeJS
+- Express
+
+## Database
+- MongoDB
 - PostgreSQL
+
+## CI/CD
+- Github actions
+
+## Containerization
 - Docker
 - Docker Compose
+
+## Deployment
+- AWS lambda
+- Elastic beanstalk
+- ECR
+
+# Steps to containerize the full stack application
 
 ## Prerequisites
 - Docker
@@ -36,7 +51,7 @@ This project is a car dealership application to have an overview of the local de
 
 1. **Clone the Repository**:
     ```
-    git clone https://github.com/yourusername/CAR-DEALERSHIP-APP.git
+    git clone https://github.com/arko92/car-dealership-app
     cd CAR-DEALERSHIP-APP/server
     ```
 
