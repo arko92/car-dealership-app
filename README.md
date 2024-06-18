@@ -13,7 +13,7 @@
 - [Notes](#notes)
 
 ## About
-A car dealership full-stack web application providing an overview of the available car dealers in the locality with user reviews. Registered user can also post reviews for the car dealers. The app includes a flask and AI based microservice to predict sentiments of user reviews. It is built with a React frontend and a Django backend, containerized using Docker and managed with Docker Compose. The microservice and backend is deployed on AWS.
+A car dealership full-stack web application providing an overview of the available car dealers in the locality with user reviews. Registered users can also post reviews for the car dealers. The app includes a flask and AI-based microservice to predict the sentiments of user reviews. It is built with a React frontend and a Django backend, containerized using Docker, and managed with Docker Compose. The microservice and backend are deployed on AWS.
 
 ## Technologies
 
